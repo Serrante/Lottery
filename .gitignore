@@ -1,0 +1,8 @@
+*.log
+config.py
+config.json
+selenium/
+__pycache__
+images/
+logs/
+excel/
