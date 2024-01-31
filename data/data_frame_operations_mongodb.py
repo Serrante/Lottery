@@ -183,7 +183,6 @@ class DataFrameManagerMongoDB:
                     "occurred_before": occurred,
                     "prediction_date": datetime.now(),
                 }
-                print(document)
                 self.collection_predictions.insert_one(document)
 
             logging.info("Final combinations saved to MongoDB.")
