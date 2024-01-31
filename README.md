@@ -1,7 +1,7 @@
 # Lottery Prediction System
 
 ## Description
-The Lottery Prediction System is a Python-based application designed to predict lottery numbers using Machine Learning algorithms. It employs Multi-Layer Perceptron (MLP) models to generate likely combinations for lottery draws.
+The Lottery Prediction System is a Python-based application designed to predict lottery numbers for the Brazilian lottery called Lotofácil, utilizing Machine Learning algorithms. It employs Multi-Layer Perceptron (MLP) models to generate likely combinations for lottery draws.
 
 The system allows users to fetch lottery data from an API, store it locally or in a MongoDB database, generate predictions based on historical data, and analyze the occurrence of numbers in previous draws.
 
