@@ -11,10 +11,10 @@ The system allows users to fetch lottery data from an API, store it locally or i
 ## Technologies Used
 - Python
 - NumPy
-- pandas
-- scikit-learn
-- requests
-- pymongo
+- Pandas
+- Scikit-learn
+- Requests
+- Pymongo
 
 ## Features
 - Fetches lottery data from a designated API.
