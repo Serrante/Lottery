@@ -102,8 +102,9 @@ class LotteryDataManager:
         Returns:
             None
         """
+        handler = LotteryDataManager()
         if response.status_code == 200:
-            LotteryDataManager.handle_successful_request(response, path, filename, args)
+            handler.handle_successful_request(response, path, filename, args)
         else:
             print(f"Request failed. Status code: {response.status_code}")
 
@@ -119,9 +120,9 @@ class LotteryDataManager:
         Returns:
             bool: True if the file should be downloaded, False otherwise.
         """
-        return (
-            not LotteryDataManager.is_sunday()
-            and not LotteryDataManager.file_downloaded_today(path, filename)
+        handler = LotteryDataManager()
+        return not handler.is_sunday() and not handler.file_downloaded_today(
+            path, filename
         )
 
     @staticmethod
@@ -137,10 +138,11 @@ class LotteryDataManager:
         Returns:
             None
         """
+        handler = LotteryDataManager()
         try:
-            if LotteryDataManager.should_download_file(path, filename):
-                response = LotteryDataManager.download_lottery_file(VARIABLES["api"])
-                LotteryDataManager.update_lottery_data(response, path, filename, args)
+            if handler.should_download_file(path, filename):
+                response = handler.download_lottery_file(VARIABLES["api"])
+                handler.update_lottery_data(response, path, filename, args)
             else:
                 logging.info(
                     "It's Sunday or file already downloaded today. No need to download the file."

@@ -119,11 +119,16 @@ class LotteryHandler:
         Returns:
             None
         """
+        mongodb = DataFrameManagerMongoDB()
         for j, final_combination in enumerate(final_combinations, start=1):
             final_combination_array = np.array(final_combination)
+            combination = final_combination_array.tolist()
+
             if any(np.array_equal(final_combination_array, x) for x in df_dezenas):
+                mongodb.save_predictions_to_mongodb(combination, True)
                 print(f"Final Combination {j}: {final_combination} (Already occurred)")
             else:
+                mongodb.save_predictions_to_mongodb(combination, False)
                 print(f"Final Combination {j}: {final_combination}")
 
     def handle_predictions(self, df: pd.DataFrame) -> None:

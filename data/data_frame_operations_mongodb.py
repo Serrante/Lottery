@@ -1,5 +1,7 @@
 """data_frame_operations_mongodb.py"""
 import logging
+from datetime import datetime
+from typing import List
 import pymongo
 import pandas as pd
 
@@ -39,6 +41,9 @@ class DataFrameManagerMongoDB:
         self.db_name = self.db_client[VARIABLES["mongodb"]["database"]]
         self.collection_lotofacil_results = self.db_name[
             VARIABLES["mongodb"]["results_collection"]
+        ]
+        self.collection_predictions = self.db_name[
+            VARIABLES["mongodb"]["predictions_collection"]
         ]
 
     def read_or_create_data_from_mongodb(self, dataframe: bool = False) -> list:
@@ -151,3 +156,55 @@ class DataFrameManagerMongoDB:
             logging.info("MongoDB data saved.")
         except pymongo.errors.PyMongoError as mongo_error:
             logging.error("Error reading data from MongoDB: %s", mongo_error)
+
+    def save_predictions_to_mongodb(
+        self, final_combinations: list, occurred: bool = False
+    ) -> None:
+        """
+        Saves the predicted combinations to the MongoDB collection.
+
+        Args:
+            final_combinations (list):
+                List of predicted combinations to be saved.
+            occurred (bool):
+                Indicates if the combination has occurred before.
+
+        Returns:
+            None
+        """
+        try:
+            if self.combination_exists(final_combinations):
+                logging.info(
+                    "Combination %s already exists in predictions.", final_combinations
+                )
+            else:
+                document = {
+                    "combination": final_combinations,
+                    "occurred_before": occurred,
+                    "prediction_date": datetime.now(),
+                }
+                print(document)
+                self.collection_predictions.insert_one(document)
+
+            logging.info("Final combinations saved to MongoDB.")
+        except pymongo.errors.PyMongoError as mongo_error:
+            logging.error("Error saving predictions to MongoDB: %s", mongo_error)
+
+    def combination_exists(self, combination: List[List[int]]) -> bool:
+        """
+        Check if a combination already exists in the predictions collection.
+
+        Args:
+            combination (List[int]): Combination to check.
+
+        Returns:
+            bool: True if the combination exists, False otherwise.
+        """
+        try:
+            existing_combination = self.collection_predictions.find_one(
+                {"combination": combination}
+            )
+            return existing_combination is not None
+        except pymongo.errors.PyMongoError as mongo_error:
+            logging.error("Error checking combination existence: %s", mongo_error)
+            return False
