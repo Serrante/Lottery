@@ -1,5 +1,4 @@
 *.log
-config.py
 config.json
 selenium/
 __pycache__
